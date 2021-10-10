@@ -7,7 +7,7 @@ function y = mAvgfilter(data, filt_order)
 %         else
 %             y(i) = sum(data((i-filt_order):i))/filt_order;
 %         end
-        y(i) = (sum(data(max([1,i-filt_order+1]):i)))/min([i,filt_order]); %this implements a MA filter that changes the average initially
+        y(i) = (sum(data(max([1,i-filt_order+1]):i)))/min([i,filt_order]); 
         
     end
 end
