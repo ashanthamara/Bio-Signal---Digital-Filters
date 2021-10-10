@@ -61,15 +61,16 @@ legend('ECG signal with noise','Delay compensated maECG_1');
 xlabel('Frequency(Hz)')
 ylabel('Amplitude')
 
-%MA(3) filter implementation with the MATLAB built-in function
-%i) Using the filter(b,a,X) function
+% MA(3) filter implementation with the MATLAB built-in function
+%% i) Using the filter(b,a,X) function
 filt_order_2 = 3;
 kernel = ones(filt_order_2,1) / filt_order_2;
 ma3ECG_2 = filter(kernel, 1, noisy_ECG);
 
 group_delay_2 = floor((filt_order_2-1)/2)*(1/fs);
 delayed_time_2 = time - group_delay_2;
-%ii) Plot nECG, ECG_template and ma3ECG_2 on the same plot
+
+%% ii) Plot nECG, ECG_template and ma3ECG_2 on the same plot
 
 figure('Name','Comparing ECG_template, noisy_ECG and ma3ECG_2');
 plot(time, raw_ecg, 'black', time,noisy_ECG,'b', delayed_time_2, ma3ECG_2,'r');
@@ -78,22 +79,22 @@ legend('ECG template','ECG Signal with Noise', 'Delay compensated maECG_2');
 xlabel('Time(s)')
 ylabel('mV')
 
-%iii) Using the fvtool(b,a) to inspect the magnitude response, phase response and the pole-zero plot of the MA(3) filter
+%% iii) Using the fvtool(b,a) to inspect the magnitude response, phase response and the pole-zero plot of the MA(3) filter
 fvtool(kernel,1);
 
-% MA(10) filter implementation with the MATLAB built-in function
+%% MA(10) filter implementation with the MATLAB built-in function
 filt_order_3 = 10;
 kernel_10 = ones(filt_order_3,1) / filt_order_3;
 
 % i) Identify the improvement of the MA(10) filter over the MA(3)
 fvtool(kernel_10, 1);
 
-% ii) Filter the nECG signal using the above MA(10) filter while compensating for the group delay
+%% ii) Filter the nECG signal using the above MA(10) filter while compensating for the group delay
 ma10ECG = filter(kernel_10, 1, noisy_ECG);
 group_delay_3 =  floor((filt_order_3-1)/2)*(1/fs);
 delayed_time_3 = time - group_delay_3;
 
-% iii) Plot nECG, ECG_template, ma3ECG_2 and ma10ECG on the same plot
+%% iii) Plot nECG, ECG_template, ma3ECG_2 and ma10ECG on the same plot
 figure('Name','Comparing ECG_template, noisy_ECG, ma3ECG_2 and ma10ECG');
 plot(time, raw_ecg, 'black', time, noisy_ECG,'b',delayed_time_2, ma3ECG_2,'g', delayed_time_3, ma10ECG,'r');
 title('Comparing ECG_template, noisy_ECG, ma3ECG_2 and ma10ECG')
@@ -101,23 +102,25 @@ legend('ECG template','ECG Signal with Noise', 'Delay compensated ma3ECG_2', 'De
 xlabel('Time(s)')
 ylabel('mV')
 
-%Optimum MA(N) filter order
+%% Optimum MA(N) filter order
 %ii) determine the optimum filter order which gives the minimum MSE
 
-order_thrshld = 50;
+order_thrshld = 80;
 MSE_values = zeros(order_thrshld);
 order_values = zeros(order_thrshld);
 %initial value
 optimum_ma_order = 1000;
+least_mse = 10000;
 for k = 2:order_thrshld
     order_values(k) = k;
     MSE_values(k) = MSError(raw_ecg, noisy_ECG, k);
-    if (optimum_ma_order > MSE_values(k))
-        optimum_ma_order = MSE_values(k);
+    if (least_mse > MSE_values(k))
+        least_mse = MSE_values(k);
+        optimum_ma_order = k;
     end
 end
-
-%plot MSE vs filter order
+optimum_ma_order;
+%% plot MSE vs filter order
 
 figure('Name','Finding Optimum Moving Average filter')
 plot(order_values,MSE_values);
@@ -125,7 +128,7 @@ title('Comparing MSE vs Filter order');
 xlabel('MA_Filter Order');
 ylabel('MSE');
 
-% 1.2. Savitzky-Golay SG(N,L) filter
+%% 1.2. Savitzky-Golay SG(N,L) filter
 
 % i) Apply a SG(3,11) filter on the nECG signal
 order = 3;

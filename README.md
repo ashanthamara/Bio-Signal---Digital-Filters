@@ -28,3 +28,24 @@ After adjusting the time scale with the sampling frequency of 500 Hz, we can obs
 ![HD_V1](https://github.com/ashanthamara/Bio-Signal---Digital-Filters/blob/question1/Figures/1%20-%20Smoothing%20Filters/Power%20Spectral%20Density%20of%20ECG%20%26%20nECG%20signal.svg)
 
 Power Spectral Density gives the signal power in different frequency components of a signal. When looking into the above figure, we can clearly see that, the ECG signal power is prominent in the lower frequencies (< 50 Hz) and the noisy ECG signal has more power in high frequencies due to the added noise.  
+
+![HD_V1](https://github.com/ashanthamara/Bio-Signal---Digital-Filters/blob/question1/Figures/1%20-%20Smoothing%20Filters/Comparing%20nECG%20and%20delay%20compensated%20maECG_1.svg)
+
+After compensating the group delay, we can see that both signals get aligned in the time domain and after applying the Moving Average filter, signal has smoothened by reducing the high frequency variation.
+
+![HD_V1](https://github.com/ashanthamara/Bio-Signal---Digital-Filters/blob/question1/Figures/1%20-%20Smoothing%20Filters/Compare%20Power%20Spectral%20Density%20Estimate%20of%20ma3ECG_1and%20nECG.svg)
+
+Above figure drastically shows that the removal of high frequency components of the signal after applying the Moving Average filter. The signal power in high frequencies is reduced but the low frequencies (<50 Hz) are not affected by the filter.
+
+![HD_V1](https://github.com/ashanthamara/Bio-Signal---Digital-Filters/blob/question1/Figures/1%20-%20Smoothing%20Filters/Comparing%20ECG_template%2C%20noisy_ECG%20and%20ma3ECG_2.png)
+
+The filtered signal has smoothened the noisy signal by reducing high frequency variations like in the signal filtered using the derived Moving Average Filter 
+
+![HD_V1](https://github.com/ashanthamara/Bio-Signal---Digital-Filters/blob/question1/Figures/1%20-%20Smoothing%20Filters/Magnitude%20Response.svg)
+
+![HD_V1](https://github.com/ashanthamara/Bio-Signal---Digital-Filters/blob/question1/Figures/1%20-%20Smoothing%20Filters/Phase%20Response.svg)
+
+![HD_V1](https://github.com/ashanthamara/Bio-Signal---Digital-Filters/blob/question1/Figures/1%20-%20Smoothing%20Filters/Pole-Zero%20Plot.svg)
+
+Magnitude Response, Phase Response & Pole - Zero Plot of MA(3) filter using fvtool
+
