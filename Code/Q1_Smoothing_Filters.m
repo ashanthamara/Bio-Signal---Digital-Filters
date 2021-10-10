@@ -135,7 +135,7 @@ order = 3;
 L = 2*11 + 1;
 sg310ECG = sgolayfilt(noisy_ECG, order, L);
 
-%ii) Plot nECG, ECG_template and sg310ECG on the same plot
+%% ii) Plot nECG, ECG_template and sg310ECG on the same plot
 figure('Name','Applying Saviztsky Golay Filter (N,L)');
 plot(time,noisy_ECG,'b',time, raw_ecg,'k',time, sg310ECG,'r');
 legend ('noisy_ECG', 'ECG_template','sg310ECG')
@@ -143,7 +143,7 @@ title('Applying Saviztsky Golay Filter SG(3,11)')
 xlabel('Time(s)')
 ylabel('mV')
 
-% Optimum SG(N,L) filter parameters
+%% Optimum SG(N,L) filter parameters
 
 %i) Calculate the MSE values for a range of parameters of the SG(N,L) filter and determine the optimum filter parameters which gives the minimum MSE
 
@@ -173,8 +173,10 @@ figure('Name','Error vs Order of Saviztsky Golay Filters');
 surf(err);
 xlabel('Filter Length'), ylabel('Polynomial Order'), zlabel('MSE');
 
-%%Plot ECG_template, sg310ECG and the signal obtained from optimum SG(N,L) filter
+%% Plot ECG_template, sg310ECG and the signal obtained from optimum SG(N,L) filter
+tic
 opt_sgECG = sgolayfilt(noisy_ECG, N_optimum, (2*L_optimum)+1); 
+toc
 
 figure('Name','Comparing ECG_template, sg310ECG and opt_sgECG');
 plot(time, noisy_ECG, 'y', time, raw_ecg, 'k', time, sg310ECG, 'b', time, opt_sgECG, 'r');
@@ -184,5 +186,20 @@ xlabel('Time(s)')
 ylabel('mV')
 N_optimum;
 
-%Compare signal features and computational complexity of the optimum filtered signals derived from MA(N) and SG(N,L) filters
+%% Compare signal features and computational complexity of the optimum filtered signals derived from MA(N) and SG(N,L) filters
+
+kernel_opt = ones(optimum_ma_order,1) / optimum_ma_order;
+tic
+maoptECG = filter(kernel_opt, 1, noisy_ECG);
+toc
+group_delay_opt =  floor((optimum_ma_order-1)/2)*(1/fs);
+delayed_time_opt = time - group_delay_opt;
+
+figure('Name','Comparing optimum MA and SG fliter');
+plot(time, noisy_ECG, 'g', time, raw_ecg, 'k', delayed_time_opt, maoptECG, 'b', time, opt_sgECG, 'r');
+title('Comparing optimum MA and SG fliter');
+legend ('noisy_ECG', 'ECG_template','opt_maECG','opt_sgECG')
+xlabel('Time(s)')
+ylabel('mV')
+
 
